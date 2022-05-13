@@ -37,9 +37,9 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/hmsk/vite-plugin-elm/issues"
+    "url": "https://github.com/gabriela-sartori/vite-plugin-gren/issues"
   },
-  "homepage": "https://github.com/hmsk/vite-plugin-elm",
+  "homepage": "https://github.com/gabriela-sartori/vite-plugin-gren",
   "dependencies": {
     "acorn": "^8.0.0",
     "acorn-walk": "^8.0.0",
