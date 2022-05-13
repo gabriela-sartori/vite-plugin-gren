@@ -1,10 +1,10 @@
 import { resolve } from 'path'
 import { defineConfig } from 'vite'
-import plugin from 'vite-plugin-gren'
-// import { plugin } from '../src/index'
+// import grenPlugin from 'vite-plugin-gren'
+import grenPlugin from '../src/index'
 
 export default defineConfig({
-  plugins: [plugin({ debug: false })],
+  plugins: [grenPlugin({ debug: false })],
   build: {
     rollupOptions: {
       input: {
