@@ -1,18 +1,17 @@
 module Hello exposing (main)
 
-import Browser exposing (Document)
-import Html exposing (a, div, li, p, text, ul)
-import Html.Attributes exposing (attribute, href)
-import Html.Events exposing (onClick)
-import Message exposing (importableMessage)
+import Browser
+import Html
+import Message
 
 
-main : Program String {} msg
 main =
-    -- Html.text <| "Hi!!!!" ++ importableMessage
-    Browser.document
-        { init = \_ -> { model = {}, command = Cmd.none }
-        , update = \_ _ -> { model = {}, command = Cmd.none }
-        , view = \_ -> { title = "Hm Nice", body = [ Html.text "HEY BROWSER PLATFORM WORKED :D" ] }
-        , subscriptions = \_ -> Sub.none
-        }
+    Html.text <| "Hi!!!!" ++ Message.importableMessage
+
+
+
+-- Browser.sandbox
+--     { init = ""
+--     , update = \_ _ -> ""
+--     , view = \_ -> Html.text "Sandbox is not working - yet"
+--     }
