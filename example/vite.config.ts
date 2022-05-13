@@ -1,7 +1,7 @@
 import { resolve } from 'path'
 import { defineConfig } from 'vite'
-// import { plugin } from 'vite-plugin-gren'
-import { plugin } from '../src/index'
+import plugin from 'vite-plugin-gren'
+// import { plugin } from '../src/index'
 
 export default defineConfig({
   plugins: [plugin({ debug: false })],

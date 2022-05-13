@@ -6,6 +6,7 @@
     "declaration": true,
     "noUnusedLocals": true,
     "esModuleInterop": true,
+    "allowJs": true,
     "outDir": "dist",
     "module": "commonjs",
     "lib": ["ESNext", "DOM"],
