@@ -1,7 +1,7 @@
 {
-  "name": "vite-plugin-elm",
+  "name": "vite-plugin-gren",
   "version": "2.7.0-beta.2",
-  "description": "Compile Elm with vite",
+  "description": "Compile Gren with vite",
   "main": "dist/index.js",
   "files": [
     "dist"
@@ -17,10 +17,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/hmsk/vite-plugin-elm.git"
+    "url": "git+ssh://git@github.com:gabriela-sartori/vite-plugin-gren.git"
   },
   "keywords": [
-    "elm",
+    "gren",
     "vite"
   ],
   "author": "Kengo Hamasaki <k.hamasaki@gmail.com>",

@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 //@ts-ignore
-import { toESModule } from 'elm-esm'
+import { toESModule } from './dependencies/gren-esm'
 //@ts-ignore
-import compiler from 'node-elm-compiler'
+import compiler from './dependencies/node-gren-compiler'
 import { relative } from 'path'
 import type { ModuleNode, Plugin } from 'vite'
 import { injectAssets } from './assetsInjector'
@@ -16,7 +16,7 @@ const viteProjectPath = (dependency: string) => `/${relative(process.cwd(), depe
 const parseImportId = (id: string) => {
   const parsedId = new URL(id, 'file://')
   const pathname = parsedId.pathname
-  const valid = pathname.endsWith('.elm')
+  const valid = pathname.endsWith('.gren')
   const withParams = parsedId.searchParams.getAll('with')
 
   return {
@@ -32,7 +32,7 @@ export const plugin = (opts?: { debug?: boolean; optimize?: boolean }): Plugin =
   const optimize = opts?.optimize
 
   return {
-    name: 'vite-plugin-elm',
+    name: 'vite-plugin-gren',
     enforce: 'pre',
     handleHotUpdate({ file, server, modules }) {
       const { valid } = parseImportId(file)
@@ -94,6 +94,7 @@ export const plugin = (opts?: { debug?: boolean; optimize?: boolean }): Plugin =
           debug: debug ?? !isBuild,
         })
 
+        // throw new Error((compiled).split("\n").map((str, index) => `${index+1}.${str}`).join("\n"))
         const esm = injectAssets(toESModule(compiled))
 
         // Apparently `addWatchFile` may not exist: https://github.com/hmsk/vite-plugin-elm/pull/36
@@ -109,7 +110,7 @@ export const plugin = (opts?: { debug?: boolean; optimize?: boolean }): Plugin =
         if (e instanceof Error && e.message.includes('-- NO MAIN')) {
           const message = `${viteProjectPath(
             pathname,
-          )}: NO MAIN .elm file is requested to transform by vite. Probably, this file is just a depending module`
+          )}: NO MAIN .gren file is requested to transform by vite. Probably, this file is just a depending module`
           throw message
         } else {
           throw e

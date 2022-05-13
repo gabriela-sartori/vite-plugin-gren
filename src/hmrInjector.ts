@@ -1,29 +1,25 @@
-const injectElmHot = (compiledESM: string, dependencies: string[]): string => `
+const injectGrenHot = (compiledESM: string, dependencies: string[]): string => `
 ${compiledESM}
 
-/* This HMR code is heavily basing on elm-hot by Keith Lazuka which is published under the MIT License
- * https://github.com/klazuka/elm-hot
- * https://github.com/klazuka/elm-hot/blob/master/LICENSE.txt
-*/
 if (import.meta.hot) {
-  let elmVersion
-  if (typeof elm$core$Maybe$Just !== 'undefined') {
-    elmVersion = '0.19.0'
-  } else if (typeof $elm$core$Maybe$Just !== 'undefined') {
-    elmVersion = '0.19.1'
+  let grenVersion
+  if (typeof gren_lang$core$Maybe$Just !== 'undefined') {
+    grenVersion = '0.19.0'
+  } else if (typeof $gren_lang$core$Maybe$Just !== 'undefined') {
+    grenVersion = '0.19.1'
   } else {
-    throw new Error("Could not determine Elm version")
+    throw new Error("Could not determine Gren version")
   }
 
-  const elmSymbol = (symbol) => {
+  const grenSymbol = (symbol) => {
     try {
-      switch (elmVersion) {
+      switch (grenVersion) {
         case '0.19.0':
           return eval(symbol);
         case '0.19.1':
           return eval('$' + symbol);
         default:
-          throw new Error('Cannot resolve ' + symbol + '. Elm version unknown!')
+          throw new Error('Cannot resolve ' + symbol + '. Gren version unknown!')
       }
     } catch (e) {
       if (e instanceof ReferenceError) {
@@ -37,7 +33,7 @@ if (import.meta.hot) {
   const instances = import.meta.hot.data ? import.meta.hot.data.instances || {} : {}
   let uid = import.meta.hot.data ? import.meta.hot.data.uid || 0 : 0
 
-  if (Object.keys(instances).length === 0) console.log("[vite-plugin-elm] HMR enabled")
+  if (Object.keys(instances).length === 0) console.log("[vite-plugin-gren] HMR enabled")
 
   const cancellers = []
   let initializingInstance = null
@@ -46,24 +42,24 @@ if (import.meta.hot) {
   import.meta.hot.accept()
   import.meta.hot.accept([
     "${dependencies.join('", "')}"
-  ], () => { console.log("[vite-plugin-elm] Dependency is updated") })
+  ], () => { console.log("[vite-plugin-gren] Dependency is updated") })
 
   import.meta.hot.on('hot-update-dependents', (data) => {
-    console.log("[vite-plugin-elm] Request to hot update dependents: " + data.join(", "))
+    console.log("[vite-plugin-gren] Request to hot update dependents: " + data.join(", "))
   })
 
   import.meta.hot.dispose((data) => {
     data.instances = instances
     data.uid = uid
 
-    _Scheduler_binding = () => _Scheduler_fail(new Error("[vite-plugin-elm] Inactive Elm instance."))
+    _Scheduler_binding = () => _Scheduler_fail(new Error("[vite-plugin-gren] Inactive Gren instance."))
 
     if (cancellers.length) {
-      console.log("[vite-plugin-elm] Killing " + cancellers.length + " running processes...")
+      console.log("[vite-plugin-gren] Killing " + cancellers.length + " running processes...")
       try {
         cancellers.forEach((cancel) => { cancel() })
       } catch (e) {
-        console.warn("[vite-plugin-elm] Kill process error: ", e.message)
+        console.warn("[vite-plugin-gren] Kill process error: ", e.message)
       }
     }
   })
@@ -94,11 +90,11 @@ if (import.meta.hot) {
     return instances[id] = instance
   }
 
-  const isFullscreenApp = () => typeof elmSymbol("elm$browser$Browser$application") !== 'undefined' || typeof elmSymbol("elm$browser$Browser$document") !== 'undefined'
+  const isFullscreenApp = () => typeof grenSymbol("gren_lang$browser$Browser$application") !== 'undefined' || typeof grenSymbol("gren_lang$browser$Browser$document") !== 'undefined'
 
   const wrapDomNode = (node) => {
     const dummyNode = document.createElement("div")
-    dummyNode.setAttribute("data-elm-hot", "true")
+    dummyNode.setAttribute("data-gren-hot", "true")
     dummyNode.style.height = "inherit"
     const parentNode = node.parentNode
     parentNode.replaceChild(dummyNode, node)
@@ -110,7 +106,7 @@ if (import.meta.hot) {
     const originalInit = module.init
     if (originalInit) {
       module.init = (args) => {
-        let elm
+        let gren
         const portSubscribes = {}
         const portSends = {}
         let domNode = null
@@ -122,18 +118,18 @@ if (import.meta.hot) {
           domNode = document.body
         }
         initializingInstance = registerInstance(domNode, flags, path, portSubscribes, portSends)
-        elm = originalInit(args)
-        wrapPorts(elm, portSubscribes, portSends)
+        gren = originalInit(args)
+        wrapPorts(gren, portSubscribes, portSends)
         initializingInstance = null
-        return elm
+        return gren
       }
     } else {
       console.error("Could not find a public module to wrap at path " + path)
     }
   }
 
-  const swap = (Elm, instance) => {
-    console.log("[vite-plugin-elm] Hot-swapping module:", instance.path)
+  const swap = (Gren, instance) => {
+    console.log("[vite-plugin-gren] Hot-swapping module:", instance.path)
     swappingInstance = instance
 
     const containerNode = instance.domNode
@@ -141,7 +137,7 @@ if (import.meta.hot) {
       containerNode.removeChild(containerNode.lastChild)
     }
 
-    const m = getAt(instance.path.split('.'), Elm)
+    const m = getAt(instance.path.split('.'), Gren)
     if (m) {
       const args = { flags: instance.flags }
       if (containerNode === document.body) {
@@ -151,47 +147,47 @@ if (import.meta.hot) {
         containerNode.appendChild(nodeForEmbed)
         args.node = nodeForEmbed
       }
-      const elm = m.init(args)
+      const gren = m.init(args)
 
       Object.keys(instance.portSubscribes).forEach((portName) => {
-        if (portName in elm.ports && 'subscribe' in elm.ports[portName]) {
+        if (portName in gren.ports && 'subscribe' in gren.ports[portName]) {
           const handlers = instance.portSubscribes[portName]
           if (!handlers.length) return
-          console.log("[vite-plugin-elm] Reconnect", handlers.length + " handlers(s) to port '" + portName + "' (" + instance.path + ").")
-          handlers.forEach(elm.ports[portName].subscribe)
+          console.log("[vite-plugin-gren] Reconnect", handlers.length + " handlers(s) to port '" + portName + "' (" + instance.path + ").")
+          handlers.forEach(gren.ports[portName].subscribe)
         } else {
           delete instance.portSubscribes[portName]
-          console.log("[vite-plugin-elm] Port was removed:", portName)
+          console.log("[vite-plugin-gren] Port was removed:", portName)
         }
       })
 
       Object.keys(instance.portSends).forEach((portName) => {
-        if (portName in elm.ports && 'send' in elm.ports[portName]) {
-          console.log("[vite-plugin-elm] Replace old port send with the new send")
-          instance.portSends[portName] = elm.ports[portName].send
+        if (portName in gren.ports && 'send' in gren.ports[portName]) {
+          console.log("[vite-plugin-gren] Replace old port send with the new send")
+          instance.portSends[portName] = gren.ports[portName].send
         } else {
           delete instance.portSends[portName]
-          console.log("[vite-plugin-elm] Port was removed:", portName)
+          console.log("[vite-plugin-gren] Port was removed:", portName)
         }
       })
     } else {
-      console.log("[vite-plugin-elm] Module was removed:", instance.path)
+      console.log("[vite-plugin-gren] Module was removed:", instance.path)
     }
     swappingInstance = null
   }
 
-  const wrapPorts = (elm, portSubscribes, portSends) => {
-    const portNames = Object.keys(elm.ports || {})
+  const wrapPorts = (gren, portSubscribes, portSends) => {
+    const portNames = Object.keys(gren.ports || {})
     if (portNames.length) {
       portNames
-        .filter(name => "subscribe" in elm.ports[name])
+        .filter(name => "subscribe" in gren.ports[name])
         .forEach((portName) => {
-          const port = elm.ports[portName]
+          const port = gren.ports[portName]
           const subscribe = port.subscribe
           const unsubscribe = port.unsubscribe
-          elm.ports[portName] = Object.assign(port, {
+          gren.ports[portName] = Object.assign(port, {
             subscribe: (handler) => {
-              console.log("[vite-plugin-elm] ports.", portName + ".subscribe called")
+              console.log("[vite-plugin-gren] ports.", portName + ".subscribe called")
               if (!portSubscribes[portName]) {
                 portSubscribes[portName] = [handler]
               } else {
@@ -200,12 +196,12 @@ if (import.meta.hot) {
               return subscribe.call(port, handler)
             },
             unsubscribe: (handler) => {
-              console.log("[vite-plugin-elm] ports.", portName + ".unsubscribe called.")
+              console.log("[vite-plugin-gren] ports.", portName + ".unsubscribe called.")
               const list = portSubscribes[portName]
               if (list && list.indexOf(handler) !== -1) {
                 list.splice(list.lastIndexOf(handler), 1)
               } else {
-                console.warn("[vite-plugin-elm] ports.", portName + ".unsubscribe: handler not subscribed")
+                console.warn("[vite-plugin-gren] ports.", portName + ".unsubscribe: handler not subscribed")
               }
               return unsubscribe.call(port, handler)
             }
@@ -213,11 +209,11 @@ if (import.meta.hot) {
         })
 
     portNames
-      .filter(name => "send" in elm.ports[name])
+      .filter(name => "send" in gren.ports[name])
       .forEach((portName) => {
-        const port = elm.ports[portName]
+        const port = gren.ports[portName]
         portSends[portName] = port.send
-        elm.ports[portName] = Object.assign(port, {
+        gren.ports[portName] = Object.assign(port, {
           send: (val) => portSends[portName].call(port, val)
         })
       })
@@ -239,7 +235,7 @@ if (import.meta.hot) {
     while (queue.length !== 0) {
       const item = queue.shift()
       if (typeof item.value === "undefined" || item.value === null) continue
-      if (item.value.hasOwnProperty("elm-hot-nav-key")) return item
+      if (item.value.hasOwnProperty("gren-hot-nav-key")) return item
       if (typeof item.value !== "object") continue
 
       for (const propName in item.value) {
@@ -270,11 +266,11 @@ if (import.meta.hot) {
         const newModel = initialStateTuple.a
 
         if (JSON.stringify(newModel.state?.a ? newModel.state.a : newModel) !== swappingInstance.initialState) {
-          console.log("[vite-plugin-elm] Initial state seems to be updated. Refreshes page")
+          console.log("[vite-plugin-gren] Initial state seems to be updated. Refreshes page")
           import.meta.hot.invalidate()
         }
 
-        if (typeof elmSymbol("elm$browser$Browser$application") !== "undefined" && typeof elmSymbol("elm$browser$Browser$Navigation") !== "undefined") {
+        if (typeof grenSymbol("gren_lang$browser$Browser$application") !== "undefined" && typeof grenSymbol("gren_lang$browser$Browser$Navigation") !== "undefined") {
           const oldKeyLoc = findNavKey(oldModel)
           const newKeyLoc = findNavKey(newModel)
           let error = null
@@ -293,12 +289,12 @@ if (import.meta.hot) {
           }
 
           if (error !== null) {
-            console.error("[vite-plugin-elm] Hot-swapping", instance.path + " not possible: " + error)
+            console.error("[vite-plugin-gren] Hot-swapping", instance.path + " not possible: " + error)
             oldModel = newModel
           }
         }
         initialStateTuple.a = oldModel
-        initialStateTuple.b = elmSymbol("elm$core$Platform$Cmd$none")
+        initialStateTuple.b = grenSymbol("gren_lang$core$Platform$Cmd$none")
       } else {
         initializingInstance.lastState = initialStateTuple.a
         initializingInstance.initialState = JSON.stringify(initialStateTuple.a.state?.a ? initialStateTuple.a.state.a : initialStateTuple.a)
@@ -314,7 +310,7 @@ if (import.meta.hot) {
         try {
           result = stepperBuilder(sendToApp, model)
         } catch (e) {
-          throw new Error("[vite-plugin-elm] Hot-swapping " + instance.path + " is not possible, please reload page. Error: " + e.message)
+          throw new Error("[vite-plugin-gren] Hot-swapping " + instance.path + " is not possible, please reload page. Error: " + e.message)
         }
       } else {
         result = stepperBuilder(sendToApp, model)
@@ -341,11 +337,11 @@ if (import.meta.hot) {
     }
   })
 
-  const swapInstances = (Elm) => {
+  const swapInstances = (Gren) => {
     const removedInstances = []
     Object.entries(instances).forEach(([id, instance]) => {
       if (instance.domNode.parentNode) {
-        swap(Elm, instance)
+        swap(Gren, instance)
       } else {
         removedInstances.push(id)
       }
@@ -355,22 +351,21 @@ if (import.meta.hot) {
       delete instance[id]
     })
 
-    findPublicModules(Elm).forEach((m) => {
+    findPublicModules(Gren).forEach((m) => {
       wrapPublicModule(m.path, m.module)
     })
   }
 
-  swapInstances(Elm)
+  swapInstances(Gren)
 }
 `
 
-// https://github.com/klazuka/elm-hot/blob/master/src/inject.js#L16
-const hotFixForElmHotNavKey = (esm: string): string => {
+const hotFixForGrenHotNavKey = (esm: string): string => {
   const hotFixForMissingKey = 'function() { key.a(onUrlChange(_Browser_getUrl())); };'
-  return esm.includes('elm$browser$Browser$application')
-    ? esm.replace(hotFixForMissingKey, `${hotFixForMissingKey}\n\tkey['elm-hot-nav-key'] = true;\n`)
+  return esm.includes('gren_lang$browser$Browser$application')
+    ? esm.replace(hotFixForMissingKey, `${hotFixForMissingKey}\n\tkey['gren-hot-nav-key'] = true;\n`)
     : esm
 }
 
 export const injectHMR = (compiledESM: string, dependencies: string[]): string =>
-  injectElmHot(hotFixForElmHotNavKey(compiledESM), dependencies)
+  injectGrenHot(hotFixForGrenHotNavKey(compiledESM), dependencies)

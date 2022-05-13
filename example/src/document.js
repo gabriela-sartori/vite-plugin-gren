@@ -1,6 +1,7 @@
-import { Elm } from './Hello.elm'
+import { Gren } from './Hello.gren'
 
-
-Elm.Hello.init({
-  flags: "Initial Message"
+console.log("hello gren!")
+Gren.Hello.init({
+  flags: "Initial Message",
+  node: document.getElementById("gren-node")
 })
