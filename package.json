@@ -1,6 +1,6 @@
 {
   "name": "vite-plugin-gren",
-  "version": "2.7.0-beta.2",
+  "version": "0.0.1",
   "description": "Compile Gren with vite",
   "main": "dist/index.js",
   "files": [
@@ -33,7 +33,8 @@
     "Steven Vandevelde <icid.asset@gmail.com>",
     "Nathan Bleigh <nathan.bleigh@gmail.com>",
     "Nicolas Bétheuil <wadouk@gmail.com>",
-    "Shane Kenney <me@shanek.org>"
+    "Shane Kenney <me@shanek.org>",
+    "Gabriela Sartori <gabriela.tsartori@gmail.com>"
   ],
   "license": "MIT",
   "bugs": {
