@@ -1,6 +1,6 @@
 {
   "name": "vite-plugin-gren",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Compile Gren with vite",
   "main": "dist/index.js",
   "files": [

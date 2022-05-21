@@ -263,9 +263,9 @@ if (import.meta.hot) {
       const initialStateTuple = init(args)
       if (swappingInstance) {
         let oldModel = swappingInstance.lastState
-        const newModel = initialStateTuple.a
+        const newModel = initialStateTuple.model
 
-        if (JSON.stringify(newModel.state?.a ? newModel.state.a : newModel) !== swappingInstance.initialState) {
+        if (JSON.stringify(newModel.state?.model ? newModel.state.model : newModel) !== swappingInstance.initialState) {
           console.log("[vite-plugin-gren] Initial state seems to be updated. Refreshes page")
           import.meta.hot.invalidate()
         }
@@ -293,11 +293,11 @@ if (import.meta.hot) {
             oldModel = newModel
           }
         }
-        initialStateTuple.a = oldModel
-        initialStateTuple.b = grenSymbol("gren_lang$core$Platform$Cmd$none")
+        initialStateTuple.model = oldModel
+        initialStateTuple.command = grenSymbol("gren_lang$core$Platform$Cmd$none")
       } else {
-        initializingInstance.lastState = initialStateTuple.a
-        initializingInstance.initialState = JSON.stringify(initialStateTuple.a.state?.a ? initialStateTuple.a.state.a : initialStateTuple.a)
+        initializingInstance.lastState = initialStateTuple.model
+        initializingInstance.initialState = JSON.stringify(initialStateTuple.model.state?.model ? initialStateTuple.model.state.model : initialStateTuple.model)
       }
 
       return initialStateTuple
