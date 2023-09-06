@@ -11,9 +11,13 @@
     "build": "rm -rf dist && tsc -p .",
     "lint": "eslint . --max-warnings 0",
     "prettier": "prettier --check .",
-    "cypress:localhost": "cd ./example && npm i && npm run build && npm run serve",
-    "cypress:run": "cypress run",
-    "cypress:open": "cypress open"
+    "prepare": "npm run build",
+    "build:example": "cd ./example && npm i && npm run build",
+    "test-server:dev": "cd ./example && npm run dev -- --port 8936",
+    "test-server:preview": "cd ./example && npm run preview -- --port 8938",
+    "cypress:prepare": "run-p test-server:*",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run"
   },
   "repository": {
     "type": "git",
@@ -35,6 +39,13 @@
     "Nicolas Bétheuil <wadouk@gmail.com>",
     "Shane Kenney <me@shanek.org>",
     "Gabriela Sartori <gabriela.tsartori@gmail.com>"
+    "Lindsay Wardell <lindsay.wardell@noredink.com>",
+    "Andreas Molitor <andreas.molitor@andrena.de>",
+    "Dave Keen <dev@ruffness.com>",
+    "notgne2 <gen2@gen2.space>",
+    "Jonas Coch <jonas.coch@bellroy.com>",
+    "Matt Polzin <mpolzin@workwithopal.com>",
+    "Ryan Schlesinger <ryan@ryanschlesinger.com>"
   ],
   "license": "MIT",
   "bugs": {
@@ -45,20 +56,22 @@
     "acorn": "^8.0.0",
     "acorn-walk": "^8.0.0",
     "elm-esm": "1.1.4",
+    "find-up": "^5.0.0",
     "node-elm-compiler": "5.0.6"
   },
   "devDependencies": {
-    "@types/node": "17.0.31",
-    "@typescript-eslint/eslint-plugin": "5.23.0",
-    "@typescript-eslint/parser": "5.23.0",
-    "cypress": "9.6.1",
-    "eslint": "8.15.0",
-    "eslint-config-prettier": "8.5.0",
-    "prettier": "2.6.2",
-    "typescript": "4.6.4",
-    "vite": "2.9.8"
+    "@types/node": "18.17.12",
+    "@typescript-eslint/eslint-plugin": "6.4.0",
+    "@typescript-eslint/parser": "6.4.0",
+    "cypress": "12.17.4",
+    "eslint": "8.47.0",
+    "eslint-config-prettier": "9.0.0",
+    "npm-run-all": "4.1.5",
+    "prettier": "3.0.1",
+    "typescript": "5.1.6",
+    "vite": "4.3.9"
   },
   "peerDependencies": {
-    "vite": "^2.0.0"
+    "vite": "^4.0.0 || ^3.0.0 || ^2.0.0"
   }
 }

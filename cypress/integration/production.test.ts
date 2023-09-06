@@ -3,7 +3,7 @@ const PRODUCTION_BUILD_SERVER = 'http://localhost:8938'
 const onProductionBuild = (path: string) => new URL(path, PRODUCTION_BUILD_SERVER).toString()
 
 describe('Browser.document', () => {
-  before(() => {
+  beforeEach(() => {
     cy.visit(onProductionBuild('/'))
   })
 
@@ -19,7 +19,7 @@ describe('Browser.document', () => {
 })
 
 describe('Browser.application', () => {
-  before(() => {
+  beforeEach(() => {
     cy.visit(onProductionBuild('/application'))
   })
 
@@ -32,7 +32,7 @@ describe('Browser.application', () => {
       cy.get('[alt="without option"]')
         .should('be.visible')
         .and(($img) => {
-          expect($img.attr('src')).to.be.match(/\/assets\/logo\.\d+\.jpg/)
+          expect($img.attr('src')).to.be.match(/\/assets\/logo-\d+\.jpg/)
         })
     })
 
@@ -63,5 +63,15 @@ describe('multiple Browser.element', () => {
     cy.contains('Browser.element sample with combined importing')
     cy.contains('This message is rendered by Description')
     cy.contains('In the next major version;')
+  })
+})
+
+describe('raw loading', () => {
+  before(() => {
+    cy.visit(onProductionBuild('/raw'))
+  })
+
+  it('importing with ?raw is not blocked by the plugin', () => {
+    cy.get('head meta[name="elm:plugin"]').should('have.attr', 'content', 'module Raw exposing (main)')
   })
 })

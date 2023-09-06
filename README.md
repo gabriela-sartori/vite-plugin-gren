@@ -1,7 +1,7 @@
 # vite-plugin-gren
 
 [![npm](https://img.shields.io/npm/v/vite-plugin-gren.svg?style=for-the-badge)](https://www.npmjs.com/package/vite-plugin-gren)
-[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/gabriela-sartori/vite-plugin-gren/Main%20CI?style=for-the-badge)](https://github.com/gabriela-sartori/vite-plugin-gren/actions/workflows/main.yml)
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/gabriela-sartori/vite-plugin-gren/main.yml?branch=main&style=for-the-badge)](https://github.com/gabriela-sartori/vite-plugin-gren/actions/workflows/main.yml)
 
 A plugin enables you to compile a Gren [application](https://package.elm-lang.org/packages/elm/browser/latest/Browser#application)/[document](https://package.elm-lang.org/packages/elm/browser/latest/Browser#document)/[element](https://package.elm-lang.org/packages/elm/browser/latest/Browser#element) on your [Vite](https://github.com/vitejs/vite) project. [Hot module replacement](https://vitejs.dev/guide/features.html#hot-module-replacement) works roughly in development.
 
@@ -109,14 +109,14 @@ Gren.Another.init({
 For 3+ main files:
 
 ```ts
-import { Gren } from './App.gren?with=./Another.gren&./YetAnother.gren'
+import { Gren } from './App.gren?with=./Another.gren&with=./YetAnother.gren'
 ```
 
 ## Acknowledgement
 
 - [klazuka/elm-hot](https://github.com/klazuka/elm-hot) for a helpful referrence of the HMR implementation
 - [ChristophP/elm-esm](https://github.com/ChristophP/elm-esm/issues/2) for publishing IIFE -> ESM logic
-- [hmsk/vite-plugin-elm](https://github.com/hmsk/vite-plugin-elm) for publishing vite-plugin-elm
+- [hmsk/vite-plugin-elm](https://github.com/hmsk/vite-plugin-elm) for creating/publishing the package
 
 ## License
 

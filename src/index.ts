@@ -3,8 +3,9 @@
 import { toESModule } from './dependencies/gren-esm'
 //@ts-ignore
 import compiler from './dependencies/node-gren-compiler'
-import { relative } from 'path'
+import { normalize, relative, dirname } from 'path'
 import type { ModuleNode, Plugin } from 'vite'
+import findUp from 'find-up'
 import { injectAssets } from './assetsInjector'
 import { injectHMR } from './hmrInjector'
 import { acquireLock } from './mutex'
@@ -16,7 +17,7 @@ const viteProjectPath = (dependency: string) => `/${relative(process.cwd(), depe
 const parseImportId = (id: string) => {
   const parsedId = new URL(id, 'file://')
   const pathname = parsedId.pathname
-  const valid = pathname.endsWith('.gren')
+  const valid = pathname.endsWith('.gren') && !parsedId.searchParams.has('raw')
   const withParams = parsedId.searchParams.getAll('with')
 
   return {
@@ -26,10 +27,31 @@ const parseImportId = (id: string) => {
   }
 }
 
-export const plugin = (opts?: { debug?: boolean; optimize?: boolean }): Plugin => {
+const findClosestElmJson = async (pathname: string) => {
+  const elmJson = await findUp('elm.json', { cwd: dirname(pathname) })
+  return elmJson ? dirname(elmJson) : undefined
+}
+
+type NodeElmCompilerOptions = {
+  cwd?: string
+  docs?: string
+  debug?: boolean
+  optimize?: boolean
+  processOpts?: Record<string, string>
+  report?: string
+  pathToElm?: string
+  verbose?: boolean
+}
+
+export const plugin = (opts?: {
+  debug?: boolean
+  optimize?: boolean
+  nodeElmCompilerOptions: NodeElmCompilerOptions
+}): Plugin => {
   const compilableFiles: Map<string, Set<string>> = new Map()
   const debug = opts?.debug
   const optimize = opts?.optimize
+  const compilerOptionsOverwrite = opts?.nodeElmCompilerOptions ?? {}
 
   return {
     name: 'vite-plugin-gren',
@@ -40,7 +62,7 @@ export const plugin = (opts?: { debug?: boolean; optimize?: boolean }): Plugin =
 
       const modulesToCompile: ModuleNode[] = []
       compilableFiles.forEach((dependencies, compilableFile) => {
-        if (dependencies.has(file)) {
+        if (dependencies.has(normalize(file))) {
           const module = server.moduleGraph.getModuleById(compilableFile)
           if (module) modulesToCompile.push(module)
         }
@@ -92,6 +114,8 @@ export const plugin = (opts?: { debug?: boolean; optimize?: boolean }): Plugin =
           optimize: typeof optimize === 'boolean' ? optimize : !debug && isBuild,
           verbose: isBuild,
           debug: debug ?? !isBuild,
+          cwd: await findClosestElmJson(pathname),
+          ...compilerOptionsOverwrite,
         })
 
         // throw new Error((compiled).split("\n").map((str, index) => `${index+1}.${str}`).join("\n"))

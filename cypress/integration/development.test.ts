@@ -4,7 +4,7 @@ const onDevelopmentBuild = (path: string) => new URL(path, DEVELOPMENT_BUILD_SER
 
 describe('Browser.document', () => {
   describe('static', () => {
-    before(() => {
+    beforeEach(() => {
       cy.visit(onDevelopmentBuild('/'))
     })
 
@@ -75,7 +75,7 @@ describe('Browser.document', () => {
 })
 
 describe('Browser.application', () => {
-  before(() => {
+  beforeEach(() => {
     cy.visit(onDevelopmentBuild('/application.html'))
   })
 
@@ -111,7 +111,7 @@ describe('Browser.application', () => {
 })
 
 describe('multiple Browser.element', () => {
-  before(() => {
+  beforeEach(() => {
     cy.visit(onDevelopmentBuild('/elements.html'))
   })
 
@@ -155,5 +155,15 @@ describe('multiple Browser.element', () => {
         .then((w) => w.performance.navigation.type)
         .should('eq', window.performance.navigation.TYPE_NAVIGATE)
     })
+  })
+})
+
+describe('raw loading', () => {
+  before(() => {
+    cy.visit(onDevelopmentBuild('/raw.html'))
+  })
+
+  it('importing with ?raw is not blocked by the plugin', () => {
+    cy.get('head meta[name="elm:plugin"]').should('have.attr', 'content', 'module Raw exposing (main)')
   })
 })
