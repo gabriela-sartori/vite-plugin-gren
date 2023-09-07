@@ -19,6 +19,6 @@ Or clone and edit `/example` project under this plugin's repo with tests under `
 A clear and concise description of what you expected to happen.
 
 **Additional context**
-Add any other context about the problem here including Elm/Node/Vite/Plugin/OS versions.
+Add any other context about the problem here including Gren/Node/Vite/Plugin/OS versions.
 
 > 💁 Before you create an issue, please consider to give a star on this repo that motivates author a bit with just a click :) Also supporting is welcome.

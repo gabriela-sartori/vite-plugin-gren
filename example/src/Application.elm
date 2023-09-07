@@ -39,12 +39,12 @@ update _ model =
 view : Model -> Html Msg
 view _ =
     div []
-        [ h1 [] [ text "Your Elm App is working!" ]
+        [ h1 [] [ text "Your Gren App is working!" ]
         , h2 [] [ text "import assets via vite" ]
         , h3 [] [ text "Without option" ]
-        , img [ src "[VITE_PLUGIN_ELM_ASSET:/assets/logo.jpg]", width 128, alt "without option" ] []
+        , img [ src "[VITE_PLUGIN_GREN_ASSET:/assets/logo.jpg]", width 128, alt "without option" ] []
         , h3 [] [ text "With inline option" ]
-        , img [ src "[VITE_PLUGIN_ELM_ASSET:/assets/logo.png?inline]", width 128, alt "with inline option" ] []
+        , img [ src "[VITE_PLUGIN_GREN_ASSET:/assets/logo.png?inline]", width 128, alt "with inline option" ] []
         , h3 [] [ text "With vite-plugin-helper" ]
         , img [ src <| asset "/assets/logo.png?inline", width 128, alt "with vite-plugin-helper" ] []
         ]

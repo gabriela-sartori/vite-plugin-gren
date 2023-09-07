@@ -1,6 +1,6 @@
-import HelloInRaw from './Raw.elm?raw'
+import HelloInRaw from './Raw.gren?raw'
 
 const meta = document.createElement('meta')
-meta.name = 'elm:plugin'
+meta.name = 'gren:plugin'
 meta.content = HelloInRaw.split('\n')[0]
 document.head.appendChild(meta)

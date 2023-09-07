@@ -13,7 +13,7 @@ describe('Browser.document', () => {
     cy.contains("I'm clicked")
   })
 
-  it('does not have a button for Elm Debugger', () => {
+  it('does not have a button for Gren Debugger', () => {
     cy.get('svg[width="24px"][height="24px"]').should('not.exist')
   })
 })
@@ -24,7 +24,7 @@ describe('Browser.application', () => {
   })
 
   it('seems to be working', () => {
-    cy.contains('Your Elm App is working!')
+    cy.contains('Your Gren App is working!')
   })
 
   describe('assets', () => {
@@ -72,6 +72,6 @@ describe('raw loading', () => {
   })
 
   it('importing with ?raw is not blocked by the plugin', () => {
-    cy.get('head meta[name="elm:plugin"]').should('have.attr', 'content', 'module Raw exposing (main)')
+    cy.get('head meta[name="gren:plugin"]').should('have.attr', 'content', 'module Raw exposing (main)')
   })
 })

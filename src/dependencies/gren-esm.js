@@ -1,5 +1,5 @@
 const toESModule = js => {
-  const elmExports = js.match(
+  const grenExports = js.match(
     /^\s*_Platform_export\(([^]*)\);\n?}\(this\)\);/m
   )[1];
   return js
@@ -9,7 +9,7 @@ const toESModule = js => {
     .replace(/function _Platform_mergeExports([^]*?)\}\n\s*}/g, "/*\n$&\n*/")
     .replace(/^\s*_Platform_export\(([^]*)\);\n?}\(this\)\);/m, "/*\n$&\n*/")
     .concat(`
-export const Gren = ${elmExports};
+export const Gren = ${grenExports};
   `);
 };
 

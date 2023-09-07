@@ -38,7 +38,7 @@ view model =
         ]
 
 
-main : Program Unit Model Msg
+main : Program {} Model Msg
 main =
     Browser.sandbox
         { init = initialModel

@@ -27,31 +27,31 @@ const parseImportId = (id: string) => {
   }
 }
 
-const findClosestElmJson = async (pathname: string) => {
-  const elmJson = await findUp('elm.json', { cwd: dirname(pathname) })
-  return elmJson ? dirname(elmJson) : undefined
+const findClosestGrenJson = async (pathname: string) => {
+  const grenJson = await findUp('gren.json', { cwd: dirname(pathname) })
+  return grenJson ? dirname(grenJson) : undefined
 }
 
-type NodeElmCompilerOptions = {
+type NodeGrenCompilerOptions = {
   cwd?: string
   docs?: string
   debug?: boolean
   optimize?: boolean
   processOpts?: Record<string, string>
   report?: string
-  pathToElm?: string
+  pathToGren?: string
   verbose?: boolean
 }
 
 export const plugin = (opts?: {
   debug?: boolean
   optimize?: boolean
-  nodeElmCompilerOptions: NodeElmCompilerOptions
+  nodeGrenCompilerOptions: NodeGrenCompilerOptions
 }): Plugin => {
   const compilableFiles: Map<string, Set<string>> = new Map()
   const debug = opts?.debug
   const optimize = opts?.optimize
-  const compilerOptionsOverwrite = opts?.nodeElmCompilerOptions ?? {}
+  const compilerOptionsOverwrite = opts?.nodeGrenCompilerOptions ?? {}
 
   return {
     name: 'vite-plugin-gren',
@@ -114,14 +114,14 @@ export const plugin = (opts?: {
           optimize: typeof optimize === 'boolean' ? optimize : !debug && isBuild,
           verbose: isBuild,
           debug: debug ?? !isBuild,
-          cwd: await findClosestElmJson(pathname),
+          cwd: await findClosestGrenJson(pathname),
           ...compilerOptionsOverwrite,
         })
 
         // throw new Error((compiled).split("\n").map((str, index) => `${index+1}.${str}`).join("\n"))
         const esm = injectAssets(toESModule(compiled))
 
-        // Apparently `addWatchFile` may not exist: https://github.com/hmsk/vite-plugin-elm/pull/36
+        // Apparently `addWatchFile` may not exist: https://github.com/hmsk/vite-plugin-gren/pull/36
         if (this.addWatchFile) {
           dependencies.forEach(this.addWatchFile.bind(this))
         }

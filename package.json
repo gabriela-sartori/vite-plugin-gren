@@ -55,9 +55,7 @@
   "dependencies": {
     "acorn": "^8.0.0",
     "acorn-walk": "^8.0.0",
-    "elm-esm": "1.1.4",
-    "find-up": "^5.0.0",
-    "node-elm-compiler": "5.0.6"
+    "find-up": "^5.0.0"
   },
   "devDependencies": {
     "@types/node": "18.17.12",

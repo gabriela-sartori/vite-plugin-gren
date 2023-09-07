@@ -3,7 +3,7 @@
 [![npm](https://img.shields.io/npm/v/vite-plugin-gren.svg?style=for-the-badge)](https://www.npmjs.com/package/vite-plugin-gren)
 [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/gabriela-sartori/vite-plugin-gren/main.yml?branch=main&style=for-the-badge)](https://github.com/gabriela-sartori/vite-plugin-gren/actions/workflows/main.yml)
 
-A plugin enables you to compile a Gren [application](https://package.elm-lang.org/packages/elm/browser/latest/Browser#application)/[document](https://package.elm-lang.org/packages/elm/browser/latest/Browser#document)/[element](https://package.elm-lang.org/packages/elm/browser/latest/Browser#element) on your [Vite](https://github.com/vitejs/vite) project. [Hot module replacement](https://vitejs.dev/guide/features.html#hot-module-replacement) works roughly in development.
+A plugin enables you to compile a Gren [application](https://packages.gren-lang.org/package/gren-lang/browser/version/3.0.0/module/Browser#application)/[document](https://packages.gren-lang.org/package/gren-lang/browser/version/3.0.0/module/Browser#document)/[element](https://packages.gren-lang.org/package/gren-lang/browser/version/3.0.0/module/Browser#element) on your [Vite](https://github.com/vitejs/vite) project. [Hot module replacement](https://vitejs.dev/guide/features.html#hot-module-replacement) works roughly in development.
 
 ```ts
 import { Gren } from './MyApplication.gren'
@@ -67,7 +67,7 @@ When it's `false`, disables debug mode in both development and production. Conve
 
 ### `optimize` (Default: `!debug && process.env.NODE_ENV === 'production'`)
 
-By giving a boolean, can control build optimization, useful to use `Debug` [gren functions](https://package.elm-lang.org/packages/elm/core/latest/Debug)
+By giving a boolean, can control build optimization, useful to use `Debug` [gren functions](https://packages.gren-lang.org/package/gren-lang/core/version/4.0.1/module/Debug)
 
 ```ts
 import { defineConfig } from 'vite'
@@ -86,7 +86,7 @@ When specify optimize attribute, had to tell if need to debug or not. It's not w
 This plugin supports importing assets by giving a particular tag `[VITE_PLUGIN_GREN_ASSET:<path to asset>]` to leverage [Vite's asset handling](https://vitejs.dev/guide/assets.html#importing-asset-as-url).
 When Gren code has a string, this plugin replaces it with an imported asset. That string should be just a string without any concatenation.
 
-```elm
+```gren
 Html.img [ Html.Attributes.src "[VITE_PLUGIN_GREN_ASSET:/assets/logo.jpg]" ] []
 ```
 
@@ -114,9 +114,9 @@ import { Gren } from './App.gren?with=./Another.gren&with=./YetAnother.gren'
 
 ## Acknowledgement
 
+- [hmsk/vite-plugin-elm](https://github.com/hmsk/vite-plugin-elm) for creating/publishing the package
 - [klazuka/elm-hot](https://github.com/klazuka/elm-hot) for a helpful referrence of the HMR implementation
 - [ChristophP/elm-esm](https://github.com/ChristophP/elm-esm/issues/2) for publishing IIFE -> ESM logic
-- [hmsk/vite-plugin-elm](https://github.com/hmsk/vite-plugin-elm) for creating/publishing the package
 
 ## License
 

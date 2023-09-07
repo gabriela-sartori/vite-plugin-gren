@@ -1,4 +1,4 @@
-import { Elm } from './Application.elm'
+import { Gren } from './Application.gren'
 
 
-Elm.Application.init();
+Gren.Application.init();

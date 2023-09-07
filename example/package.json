@@ -1,8 +1,8 @@
 {
-  "name": "vite-plugin-elm-sample",
+  "name": "vite-plugin-gren-sample",
   "private": true,
   "version": "2.8.0",
-  "description": "A sample project to use vite-plugin-elm",
+  "description": "A sample project to use vite-plugin-gren",
   "main": "index.js",
   "scripts": {
     "dev": "vite",
@@ -12,8 +12,8 @@
   "author": "Kengo Hamasaki <k.hamasaki@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "elm": "0.19.1-5",
+    "gren": "0.3.0",
     "vite": "4.3.4",
-    "vite-plugin-elm": "file:../"
+    "vite-plugin-gren": "file:../"
   }
 }

@@ -1,11 +1,11 @@
-import { Elm } from './Description.elm?with=./AnotherDescription.elm'
+import { Gren } from './Description.gren?with=./AnotherDescription.gren'
 
-Elm.Description.init({
+Gren.Description.init({
   node: document.getElementById('description'),
-  flags: 'This message is rendered by Description.elm.'
+  flags: 'This message is rendered by Description.gren.'
 })
 
-Elm.AnotherDescription.init({
+Gren.AnotherDescription.init({
   node: document.getElementById('anotherDescription'),
   flags: ''
 })

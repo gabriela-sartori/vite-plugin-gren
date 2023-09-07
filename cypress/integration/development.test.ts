@@ -14,13 +14,13 @@ describe('Browser.document', () => {
       cy.contains("I'm clicked")
     })
 
-    it('has a button for Elm Debugger', () => {
+    it('has a button for Gren Debugger', () => {
       cy.get('svg[width="24px"][height="24px"]').should('be.visible')
     })
   })
 
   describe('HMR', () => {
-    const files = ['example/src/Hello.elm', 'example/src/Message.elm']
+    const files = ['example/src/Hello.gren', 'example/src/Message.gren']
     beforeEach(() => {
       cy.visit(onDevelopmentBuild('/'))
       cy.task('keepOriginal', files)
@@ -33,7 +33,7 @@ describe('Browser.document', () => {
     it('performs HMR for editing view', () => {
       cy.get('[aria-label="Clickable"]').click()
       cy.task('amendFile', {
-        path: 'example/src/Hello.elm',
+        path: 'example/src/Hello.gren',
         target: 'See Browser.element sample',
         replacement: 'Replaced Message',
       })
@@ -47,7 +47,7 @@ describe('Browser.document', () => {
     it('performs HMR for editing imported module', () => {
       cy.get('[aria-label="Clickable"]').click()
       cy.task('amendFile', {
-        path: 'example/src/Message.elm',
+        path: 'example/src/Message.gren',
         target: 'This message is from a dependency!',
         replacement: 'Dependency is updated',
       })
@@ -61,8 +61,8 @@ describe('Browser.document', () => {
     it('does not perform HMR but reload the page when editing initial state', () => {
       cy.get('[aria-label="Clickable"]').click()
       cy.task('amendFile', {
-        path: 'example/src/Hello.elm',
-        target: 'through vite-plugin-elm',
+        path: 'example/src/Hello.gren',
+        target: 'through vite-plugin-gren',
         replacement: 'via the plugin',
       })
       cy.contains('via the plugin')
@@ -80,7 +80,7 @@ describe('Browser.application', () => {
   })
 
   it('seems to be working', () => {
-    cy.contains('Your Elm App is working!')
+    cy.contains('Your Gren App is working!')
   })
 
   describe('assets', () => {
@@ -122,7 +122,7 @@ describe('multiple Browser.element', () => {
   })
 
   describe('HMR', () => {
-    const files = ['example/src/Description.elm', 'example/src/ActualContentForAnotherDescription.elm']
+    const files = ['example/src/Description.gren', 'example/src/ActualContentForAnotherDescription.gren']
     beforeEach(() => {
       cy.visit(onDevelopmentBuild('/elements.html'))
       cy.task('keepOriginal', files)
@@ -134,7 +134,7 @@ describe('multiple Browser.element', () => {
 
     it('performs HMR for editing view', () => {
       cy.task('amendFile', {
-        path: 'example/src/Description.elm',
+        path: 'example/src/Description.gren',
         target: 'The above sentence',
         replacement: 'The sentence above',
       })
@@ -146,7 +146,7 @@ describe('multiple Browser.element', () => {
 
     it('performs HMR for editing imported module', () => {
       cy.task('amendFile', {
-        path: 'example/src/ActualContentForAnotherDescription.elm',
+        path: 'example/src/ActualContentForAnotherDescription.gren',
         target: '3.0',
         replacement: '4.0',
       })
@@ -164,6 +164,6 @@ describe('raw loading', () => {
   })
 
   it('importing with ?raw is not blocked by the plugin', () => {
-    cy.get('head meta[name="elm:plugin"]').should('have.attr', 'content', 'module Raw exposing (main)')
+    cy.get('head meta[name="gren:plugin"]').should('have.attr', 'content', 'module Raw exposing (main)')
   })
 })

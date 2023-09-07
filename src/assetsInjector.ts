@@ -3,7 +3,7 @@ import { parse } from 'acorn'
 import { fullAncestor as walk } from 'acorn-walk'
 import crypto from 'crypto'
 
-const ASSET_TAG = /'\[VITE_PLUGIN_ELM_ASSET:(?<path>.+?)\]'/g
+const ASSET_TAG = /'\[VITE_PLUGIN_GREN_ASSET:(?<path>.+?)\]'/g
 const HELPER_PACKAGE_IDENTIFIER = 'VITE_PLUGIN_HELPER_ASSET'
 
 const importNameFrom = (path: string) => {
@@ -53,7 +53,7 @@ export const injectAssets = (compiledESM: string) => {
     start: number
     end: number
   }[] = []
-  
+
   const ast = parse(compiledESM, { ecmaVersion: 2015, sourceType: 'module' })
   let helperFunctionName: string
   walk(

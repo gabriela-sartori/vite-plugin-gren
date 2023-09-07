@@ -24,7 +24,7 @@ type alias Model =
 
 init : String -> ( Model, Cmd Msg )
 init flags =
-    ( { message = "Hi, I'm compiled Browser.document func through vite-plugin-elm: " ++ flags }, Cmd.none )
+    ( { message = "Hi, I'm compiled Browser.document func through vite-plugin-gren: " ++ flags }, Cmd.none )
 
 
 type Msg
@@ -40,7 +40,7 @@ update msg model =
 
 view : Model -> Document Msg
 view model =
-    { title = "vite-elm-plugin"
+    { title = "vite-gren-plugin"
     , body =
         [ div [ onClick (Name "Woooo, I'm clicked"), attribute "aria-label" "Clickable" ] [ text model.message ]
         , div [] [ text importableMessage ]
